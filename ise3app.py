@@ -1,3 +1,4 @@
+import pathlib
 import dash
 from dash import dcc, html, dash_table
 import dash_bootstrap_components as dbc
@@ -5,11 +6,16 @@ from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.express as px
 
+PATH = pathlib.Path(__file__).parent
+DATA_PATH = PATH.joinpath("data").resolve()
+dfEvaluations = pd.read_csv(DATA_PATH.joinpath("evaluations.xlsx"))
+dfEnseignements = pd.read_csv(DATA_PATH.joinpath("enseignements.xlsx"))
 
-dfEvaluations = pd.read_excel("assets/evaluations.xlsx")
-dfEnseignements = pd.read_excel("assets/enseignements.xlsx")
+#dfEvaluations = pd.read_excel("assets/evaluations.xlsx")
+#dfEnseignements = pd.read_excel("assets/enseignements.xlsx")
 
 app = dash.Dash(external_stylesheets=[dbc.themes.MATERIA], suppress_callback_exceptions=True)
+server = app.server
 
 #---------------------------------------ENTETE-----------------------------------------------------------
 entete = html.Div([
@@ -222,4 +228,5 @@ def load_page(lien):
 
 #-----------------------------------------------run app---------------------------------------------------
 app.title="ISE3-2023"
-app.run_server(debug=True)
+if __name__ == "__main__":
+    app.run_server(debug=True)
